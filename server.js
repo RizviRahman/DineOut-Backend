@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+// const cors = require('cors');
 require('dotenv').config(); 
 
 const userRoutes = require('./routes/userRoutes');  
@@ -12,7 +13,10 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 
-
+// app.use(cors({
+//   origin: 'http://localhost:5173',
+//   credentials: true
+// }));
 // routes
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
@@ -22,7 +26,7 @@ app.use('/api/items', itemRoutes);
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
         app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}\nhttp://localhost:${PORT}`);
+            console.log(`Server is running on port ${PORT}\nhttp://localhost:${PORT}/api/`);
         });
     })
     .catch(err => {
