@@ -24,7 +24,7 @@ const loginUser = async (req, res) => {
         const user = await User.login( email, password );
           
         const token = createToken(user._id);  
-        res.status(200).json({ message: 'Login successful', user, token });
+        res.status(200).json({ message: 'Login successful', _id:user._id, name:user.name, role:user.role, email:user.email, token });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -45,7 +45,7 @@ const signupUser = async (req, res) => {
     try {
         const user = await User.signup(name, email, password);
         const token = createToken(user._id);
-        res.status(201).json({ message: 'User created successfully',token, user });
+        res.status(201).json({ message: 'User created successfully',token, _id:user._id, name:user.name, role:user.role, email:user.email });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }   
@@ -61,10 +61,44 @@ const getAllUser = async (req, res) => {
     }
 };
 
+// update user
+const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const { role } = req.body;
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            id,
+            { role },  
+        );
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }   
+        res.status(200).json({ message: 'User updated successfully', updatedUser});
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error', error: error.message });
+    }   
+};
+
+
+// Delete a user
+const deleteUser = async (req, res) => {
+    const { id } = req.params; 
+    try {
+        const deletedUser = await User.findByIdAndDelete(id);
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error', error: error.message });
+    }
+};
 
 
 module.exports = {
     loginUser,
     signupUser,
-    getAllUser
+    getAllUser,
+    updateUser,
+    deleteUser
 };
