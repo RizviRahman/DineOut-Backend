@@ -6,6 +6,7 @@ require('dotenv').config();
 const userRoutes = require('./routes/userRoutes');  
 const orderRoutes = require('./routes/orderRoutes');  
 const itemRoutes = require('./routes/itemRoutes');
+const requireAuth = require('./middleware/requireAuth');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,6 +20,7 @@ app.use(express.json());
 // }));
 // routes
 app.use('/api/users', userRoutes);
+app.use(requireAuth);
 app.use('/api/orders', orderRoutes);
 app.use('/api/items', itemRoutes);
 
