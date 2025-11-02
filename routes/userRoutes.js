@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const requireAuth = require('../middleware/requireAuth');
 const { loginUser, signupUser, getAllUser, updateUser, deleteUser } = require('../controllers/userController');
 
 // POST /api/users/login
@@ -13,7 +14,7 @@ router.post('/signup', signupUser);
 //     res.send('User route is working');
 // });
 
-
+router.use(requireAuth);
 router.get('/', getAllUser);
 
 // router.post('/', addUser);

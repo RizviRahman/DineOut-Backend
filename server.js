@@ -6,7 +6,6 @@ require('dotenv').config();
 const userRoutes = require('./routes/userRoutes');  
 const orderRoutes = require('./routes/orderRoutes');  
 const itemRoutes = require('./routes/itemRoutes');
-const requireAuth = require('./middleware/requireAuth');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,10 +18,9 @@ app.use(express.json());
 //   credentials: true
 // }));
 // routes
-app.use('/api/users', userRoutes);
-app.use(requireAuth);
-app.use('/api/orders', orderRoutes);
 app.use('/api/items', itemRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Connect to MongoDB and start the server
 mongoose.connect(process.env.MONGODB_URI)

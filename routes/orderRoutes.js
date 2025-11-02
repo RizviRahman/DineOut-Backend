@@ -1,4 +1,5 @@
 const express = require('express');
+const requireAuth = require('../middleware/requireAuth');
 const { getAllOrders, addOrder, updateOrder, deleteOrder } = require('../controllers/orderController');
 const router = express.Router();
 
@@ -7,6 +8,7 @@ const router = express.Router();
 // router.get('/', (req, res) => {
 //     res.send('order route is working');
 // });
+router.use(requireAuth);
 
 router.get('/', getAllOrders);
 
